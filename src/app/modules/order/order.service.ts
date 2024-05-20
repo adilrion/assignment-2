@@ -1,9 +1,6 @@
-import { ApiResponse } from "../../../shared/ApiResponse";
-import { ProductModel } from "../product/product.model";
-import { IOrder } from "./order.interface";
-import { OrderModel } from "./order.model";
-
-
+import { ProductModel } from '../product/product.model'
+import { IOrder } from './order.interface'
+import { OrderModel } from './order.model'
 
 // order service for added new order
 
@@ -20,7 +17,6 @@ export async function addOrder(order: IOrder): Promise<IOrder> {
     }
 
     if (order.quantity > product?.inventory?.quantity) {
-      // If ordered quantity exceeds available quantity, send error response
       const errorResponse = {
         success: false,
         message: 'Insufficient quantity available in inventory',
@@ -41,54 +37,72 @@ export async function addOrder(order: IOrder): Promise<IOrder> {
   }
 }
 
-
-
 // order service for getting all orders
-export async function getOrders(): Promise<IOrder[]> {
+export async function getOrders(email: string): Promise<IOrder[]> {
   try {
-    const orders = await OrderModel.find();
-    return orders;
+    const pipeline = [
+      ...(email ? [{ $match: { email } }] : []),
+      {
+        $project: {
+          email: 1,
+          price: 1,
+          quantity: 1,
+          product: 1,
+        },
+      },
+    ]
+
+    const orders = await OrderModel.aggregate(pipeline).exec()
+
+    if (orders.length <= 0) {
+      const errorResponse = {
+        success: false,
+        message: 'Orders not found',
+      }
+      throw errorResponse
+    }
+
+    return orders
   } catch (error) {
     // @ts-ignore
-    throw new Error(error.message || 'Error in getting orders');
+    throw new Error(error.message || 'Error in getting orders')
   }
 }
-
 
 // order service for getting single order
 export async function getOrder(id: string): Promise<IOrder | null> {
   try {
-    const order = await OrderModel.findById(id);
-    return order;
-  }
-  catch (error) {
+    const order = await OrderModel.findById(id)
+    return order
+  } catch (error) {
     // @ts-ignore
-    throw new Error(error.message || 'Error in getting order');
+    throw new Error(error.message || 'Error in getting order')
   }
 }
-
 
 // order service for updating single order
-export async function updateOrder(id: string, order: IOrder): Promise<IOrder | null> {
+export async function updateOrder(
+  id: string,
+  order: IOrder,
+): Promise<IOrder | null> {
   try {
-    const updatedOrder = await OrderModel.findByIdAndUpdate(id, order, { new: true });
-    return updatedOrder;
-  }
-  catch (error) {
+    const updatedOrder = await OrderModel.findByIdAndUpdate(id, order, {
+      new: true,
+    })
+    return updatedOrder
+  } catch (error) {
     // @ts-ignore
-    throw new Error(error.message || 'Error in updating order');
+    throw new Error(error.message || 'Error in updating order')
   }
 }
-
 
 // order service for deleting single order
 export async function deleteOrder(id: string): Promise<void> {
   try {
-    await OrderModel.findByIdAndDelete(id);
-  }
-  catch (error) {
+    await OrderModel.findByIdAndDelete(id)
+  } catch (error) {
     // @ts-ignore
-    throw new Error(error.message || 'Error in deleting order');
+    throw new Error(error.message || 'Error in deleting order')
   }
 }
 

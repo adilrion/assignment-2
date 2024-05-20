@@ -32,7 +32,9 @@ const addOrder: RequestHandler = async (req, res): Promise<void> => {
 // controller for handling all orders retrieval
 const getOrders: RequestHandler = async (req, res): Promise<void> => {
   try {
-    const result = await orderService.getOrders()
+
+    const filter = req.query.email as string || ''
+    const result = await orderService.getOrders(filter as string)
     ApiResponse<IOrder[]>(res, {
       statusCode: 200,
       success: true,
