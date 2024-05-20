@@ -9,10 +9,7 @@ let server: Server
 // database connection
 const main = async () => {
   try {
-    await mongoose.connect(config.db.host, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    } as ConnectOptions)
+    await mongoose.connect(config.db.host as string)
 
     server = app.listen(config.port, () => {
       console.log(`💚 Example app listening on port ${config.port}`)
