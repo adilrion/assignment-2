@@ -33,7 +33,11 @@ export async function addOrder(order: IOrder): Promise<IOrder> {
     const newOrder = await OrderModel.create(order)
     return newOrder
   } catch (error) {
-    throw error
+    throw {
+      success: false,
+      message: 'Error in adding order',
+    
+    }
   }
 }
 
@@ -65,7 +69,11 @@ export async function getOrders(email: string): Promise<IOrder[]> {
     return orders
   } catch (error) {
     // @ts-ignore
-    throw new Error(error.message || 'Error in getting orders')
+    throw {
+      success: false,
+      message: 'Error in getting orders',
+    
+    }
   }
 }
 
@@ -75,8 +83,13 @@ export async function getOrder(id: string): Promise<IOrder | null> {
     const order = await OrderModel.findById(id)
     return order
   } catch (error) {
+
+    const errorResponse = {
+      success: false,
+      message: 'Order not found',
+    }
     // @ts-ignore
-    throw new Error(error.message || 'Error in getting order')
+    throw errorResponse
   }
 }
 
@@ -91,8 +104,13 @@ export async function updateOrder(
     })
     return updatedOrder
   } catch (error) {
+
+    
     // @ts-ignore
-    throw new Error(error.message || 'Error in updating order')
+    throw {
+      success: false,
+      message: 'Error in updating order',
+    }
   }
 }
 
@@ -102,7 +120,10 @@ export async function deleteOrder(id: string): Promise<void> {
     await OrderModel.findByIdAndDelete(id)
   } catch (error) {
     // @ts-ignore
-    throw new Error(error.message || 'Error in deleting order')
+    throw {
+      success: false,
+      message: 'Error in deleting order',
+    }
   }
 }
 
