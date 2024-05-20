@@ -5,35 +5,27 @@ const product_model_1 = require("../product/product.model");
 const order_model_1 = require("./order.model");
 // order service for added new order
 async function addOrder(order) {
-    try {
-        const product = await product_model_1.ProductModel.findById(order.productId);
-        if (!product) {
-            const errorResponse = {
-                success: false,
-                message: 'Product not found',
-            };
-            throw errorResponse;
-        }
-        if (order.quantity > product?.inventory?.quantity) {
-            const errorResponse = {
-                success: false,
-                message: 'Insufficient quantity available in inventory',
-            };
-            throw errorResponse;
-        }
-        // Update inventory quantity and inStock status
-        product.inventory.quantity -= order.quantity;
-        product.inventory.inStock = product?.inventory?.quantity > 0;
-        await product.save();
-        const newOrder = await order_model_1.OrderModel.create(order);
-        return newOrder;
-    }
-    catch (error) {
-        throw {
+    const product = await product_model_1.ProductModel.findById(order.productId);
+    if (!product) {
+        const errorResponse = {
             success: false,
-            message: 'Error in adding order',
+            message: 'Product not found',
         };
+        throw errorResponse;
     }
+    if (order.quantity > product?.inventory?.quantity) {
+        const errorResponse = {
+            success: false,
+            message: 'Insufficient quantity available in inventory',
+        };
+        throw errorResponse;
+    }
+    // Update inventory quantity and inStock status
+    product.inventory.quantity -= order.quantity;
+    product.inventory.inStock = product?.inventory?.quantity > 0;
+    await product.save();
+    const newOrder = await order_model_1.OrderModel.create(order);
+    return newOrder;
 }
 exports.addOrder = addOrder;
 // order service for getting all orders

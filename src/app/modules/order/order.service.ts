@@ -5,40 +5,32 @@ import { OrderModel } from './order.model'
 // order service for added new order
 
 export async function addOrder(order: IOrder): Promise<IOrder> {
-  try {
-    const product = await ProductModel.findById(order.productId)
+  const product = await ProductModel.findById(order.productId)
 
-    if (!product) {
-      const errorResponse = {
-        success: false,
-        message: 'Product not found',
-      }
-      throw errorResponse
-    }
-
-    if (order.quantity > product?.inventory?.quantity) {
-      const errorResponse = {
-        success: false,
-        message: 'Insufficient quantity available in inventory',
-      }
-      throw errorResponse
-    }
-
-    // Update inventory quantity and inStock status
-    product.inventory.quantity -= order.quantity
-    product.inventory.inStock = product?.inventory?.quantity > 0
-
-    await product.save()
-
-    const newOrder = await OrderModel.create(order)
-    return newOrder
-  } catch (error) {
-    throw {
+  if (!product) {
+    const errorResponse = {
       success: false,
-      message: 'Error in adding order',
-    
+      message: 'Product not found',
     }
+    throw errorResponse
   }
+
+  if (order.quantity > product?.inventory?.quantity) {
+    const errorResponse = {
+      success: false,
+      message: 'Insufficient quantity available in inventory',
+    }
+    throw errorResponse
+  }
+
+  // Update inventory quantity and inStock status
+  product.inventory.quantity -= order.quantity
+  product.inventory.inStock = product?.inventory?.quantity > 0
+
+  await product.save()
+
+  const newOrder = await OrderModel.create(order)
+  return newOrder
 }
 
 // order service for getting all orders
@@ -72,7 +64,6 @@ export async function getOrders(email: string): Promise<IOrder[]> {
     throw {
       success: false,
       message: 'Error in getting orders',
-    
     }
   }
 }
@@ -83,7 +74,6 @@ export async function getOrder(id: string): Promise<IOrder | null> {
     const order = await OrderModel.findById(id)
     return order
   } catch (error) {
-
     const errorResponse = {
       success: false,
       message: 'Order not found',
@@ -104,8 +94,6 @@ export async function updateOrder(
     })
     return updatedOrder
   } catch (error) {
-
-    
     // @ts-ignore
     throw {
       success: false,
