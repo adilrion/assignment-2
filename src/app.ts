@@ -1,7 +1,7 @@
 import cookeParser from 'cookie-parser'
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
-import application_router from './routes'
+import application_router from './app/routes'
 
 const app: Application = express()
 
