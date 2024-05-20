@@ -1,16 +1,17 @@
 import express from 'express'
+import productRouter from '../modules/product/product.route'
 
-const application_router = express.Router()
+const applicationRouter = express.Router()
 
-// const allRouters = [
-//   {
-//     path: '/auth',
-//     route: undefined,
-//   },
-// ]
+const allRouters = [
+  {
+    path: '/products',
+    route: productRouter,
+  },
+]
 
-// allRouters?.forEach(route => {
-//   application_router.use(route?.path, route?.route)
-// })
+allRouters?.forEach(route => {
+  applicationRouter.use(route?.path, route?.route)
+})
 
-export default application_router
+export default applicationRouter

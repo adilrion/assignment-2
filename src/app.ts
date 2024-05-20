@@ -1,7 +1,7 @@
 import cookeParser from 'cookie-parser'
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
-import application_router from './app/routes'
+import applicationRouter from './app/routes'
 
 const app: Application = express()
 
@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // application routes
-app.use('/api/v1/', application_router)
+app.use('/api/', applicationRouter)
 
 // welcome route
 app.get('/', (req: Request, res: Response) => {

@@ -1,33 +1,33 @@
 import { RequestHandler } from 'express'
+import { ApiResponse } from '../../../shared/ApiResponse'
 import { IProduct } from './product.interface'
 import { productService } from './product.services'
-import { ApiResponse } from '../../../shared/ApiResponse'
 
 // product controller for handling new product creation
-const create_product: RequestHandler = async (req, res): Promise<void> => {
+const createProduct: RequestHandler = async (req, res): Promise<void> => {
   try {
     const product = req.body
-    const result = await productService.save_product(product)
-      ApiResponse<IProduct>(res, {
-        statusCode: 200,
-        success: true,
-        message: 'Product created successfully!',
-        body: result,
-      })
+    console.log('🚀 ~ constcreateProduct:RequestHandler= ~ product:', product)
+    const result = await productService.saveProduct(product)
+    ApiResponse<IProduct>(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Product created successfully!',
+      body: result,
+    })
   } catch (error) {
     res.status(400).json({
       success: false,
       // @ts-ignore
-      message: error?.message
+      message: error?.message,
     })
   }
 }
 
-
 // product controller for handling all product retrieval
-const get_products: RequestHandler = async (req, res): Promise<void> => {
+const getProducts: RequestHandler = async (req, res): Promise<void> => {
   try {
-    const result = await productService.get_products()
+    const result = await productService.getProducts()
     ApiResponse<IProduct[]>(res, {
       statusCode: 200,
       success: true,
@@ -38,17 +38,16 @@ const get_products: RequestHandler = async (req, res): Promise<void> => {
     res.status(400).json({
       success: false,
       // @ts-ignore
-      message: error?.message
+      message: error?.message,
     })
   }
 }
 
-
 // product controller for handling single product retrieval
-const get_product: RequestHandler = async (req, res): Promise<void> => {
+const getProduct: RequestHandler = async (req, res): Promise<void> => {
   try {
     const id = req.params.id
-    const result = await productService.get_product(id)
+    const result = await productService.getProduct(id)
     ApiResponse<IProduct>(res, {
       statusCode: 200,
       success: true,
@@ -59,18 +58,17 @@ const get_product: RequestHandler = async (req, res): Promise<void> => {
     res.status(400).json({
       success: false,
       // @ts-ignore
-      message: error?.message
+      message: error?.message,
     })
   }
 }
 
-
 // product controller for handling single product update
-const update_product: RequestHandler = async (req, res): Promise<void> => {
+const updateProduct: RequestHandler = async (req, res): Promise<void> => {
   try {
     const id = req.params.id
     const product = req.body
-    const result = await productService.update_product(id, product)
+    const result = await productService.updateProduct(id, product)
     ApiResponse<IProduct>(res, {
       statusCode: 200,
       success: true,
@@ -81,38 +79,35 @@ const update_product: RequestHandler = async (req, res): Promise<void> => {
     res.status(400).json({
       success: false,
       // @ts-ignore
-      message: error?.message
+      message: error?.message,
     })
   }
 }
 
-
 // product controller for handling single product deletion
-const delete_product: RequestHandler = async (req, res): Promise<void> => {
+const deleteProduct: RequestHandler = async (req, res): Promise<void> => {
   try {
     const id = req.params.id
-    const result = await productService.delete_product(id)
-    ApiResponse<IProduct>(res, {
+    await productService.deleteProduct(id)
+    ApiResponse<null>(res, {
       statusCode: 200,
       success: true,
       message: 'Product deleted successfully!',
-      body: result,
+      body: null,
     })
   } catch (error) {
     res.status(400).json({
       success: false,
       // @ts-ignore
-      message: error?.message
+      message: error?.message,
     })
   }
 }
 
-
-
 export const productController = {
- create_product,
- get_products,
- get_product,
- update_product,
- delete_product,
+  createProduct,
+  getProducts,
+  getProduct,
+  updateProduct,
+  deleteProduct,
 }
