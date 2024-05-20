@@ -7,7 +7,7 @@ import { productService } from './product.services'
 const createProduct: RequestHandler = async (req, res): Promise<void> => {
   try {
     const product = req.body
-    console.log('🚀 ~ constcreateProduct:RequestHandler= ~ product:', product)
+    
     const result = await productService.saveProduct(product)
     ApiResponse<IProduct>(res, {
       statusCode: 200,
@@ -27,7 +27,9 @@ const createProduct: RequestHandler = async (req, res): Promise<void> => {
 // product controller for handling all product retrieval
 const getProducts: RequestHandler = async (req, res): Promise<void> => {
   try {
-    const result = await productService.getProducts()
+        const searchTerm = req.query.searchTerm as string || ''
+        console.log("🚀 ~ constgetProducts:RequestHandler= ~ searchTerm:", searchTerm)
+    const result = await productService.getProducts(searchTerm)
     ApiResponse<IProduct[]>(res, {
       statusCode: 200,
       success: true,

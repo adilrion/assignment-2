@@ -9,8 +9,11 @@ const saveProduct = async (product: IProduct): Promise<IProduct> => {
 }
 
 // get all product
-const getProducts = async (): Promise<IProduct[]> => {
-  const result = await ProductModel.find()
+const getProducts = async (searchTerm: string): Promise<IProduct[]> => {
+  
+
+
+  const result = await ProductModel.find({name: new RegExp(searchTerm, 'i')})
   if (!result) throw new Error('Product not found')
   return result
 }
