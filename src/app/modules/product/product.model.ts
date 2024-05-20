@@ -8,7 +8,7 @@ const VariantSchema: Schema = new Schema<IVariant>({
 
 const InventorySchema: Schema = new Schema<IInventory>({
   quantity: { type: Number, required: true },
-  inStock: { type: Boolean, required: true },
+  inStock: { type: Boolean, default: function () { return this.quantity > 0 } }
 })
 
 const ProductSchema: Schema = new Schema<IProduct>({

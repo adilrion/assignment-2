@@ -1,18 +1,46 @@
+import { ApiResponse } from "../../../shared/ApiResponse";
+import { ProductModel } from "../product/product.model";
 import { IOrder } from "./order.interface";
 import { OrderModel } from "./order.model";
 
 
 
 // order service for added new order
+
 export async function addOrder(order: IOrder): Promise<IOrder> {
   try {
-    const newOrder = await OrderModel.create(order);
-    return newOrder;
+    const product = await ProductModel.findById(order.productId)
+
+    if (!product) {
+      const errorResponse = {
+        success: false,
+        message: 'Product not found',
+      }
+      throw errorResponse
+    }
+
+    if (order.quantity > product?.inventory?.quantity) {
+      // If ordered quantity exceeds available quantity, send error response
+      const errorResponse = {
+        success: false,
+        message: 'Insufficient quantity available in inventory',
+      }
+      throw errorResponse
+    }
+
+    // Update inventory quantity and inStock status
+    product.inventory.quantity -= order.quantity
+    product.inventory.inStock = product?.inventory?.quantity > 0
+
+    await product.save()
+
+    const newOrder = await OrderModel.create(order)
+    return newOrder
   } catch (error) {
-    // @ts-ignore
-    throw new Error(error.message || 'Error in adding order');
+    throw error
   }
 }
+
 
 
 // order service for getting all orders

@@ -16,8 +16,8 @@ export const productValidation = z.object({
       )
       .min(1),
     inventory: z.object({
-      quantity: z.number().min(1),
-      inStock: z.boolean(),
+      quantity: z.number().optional(),
+      inStock: z.boolean().optional(),
     }),
   }),
 })
@@ -40,7 +40,7 @@ export const productUpdateValidation = z.object({
         .min(1)
         .optional(),
       inventory: z.object({
-        quantity: z.number().min(1).optional(),
+        quantity: z.number().optional(),
         inStock: z.boolean().optional(),
       }),
     })
