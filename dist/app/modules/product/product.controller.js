@@ -27,12 +27,13 @@ const createProduct = async (req, res) => {
 const getProducts = async (req, res) => {
     try {
         const searchTerm = req.query.searchTerm || '';
-        console.log("🚀 ~ constgetProducts:RequestHandler= ~ searchTerm:", searchTerm);
         const result = await product_services_1.productService.getProducts(searchTerm);
         (0, ApiResponse_1.ApiResponse)(res, {
             statusCode: 200,
             success: true,
-            message: 'Products retrieved successfully!',
+            message: searchTerm
+                ? `Products matching search term '${searchTerm}' fetched successfully!`
+                : 'Products fetched successfully!',
             body: result,
         });
     }
@@ -52,7 +53,7 @@ const getProduct = async (req, res) => {
         (0, ApiResponse_1.ApiResponse)(res, {
             statusCode: 200,
             success: true,
-            message: 'Product retrieved successfully!',
+            message: 'Product fetched successfully!',
             body: result,
         });
     }

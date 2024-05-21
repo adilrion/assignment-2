@@ -31,7 +31,9 @@ const getOrders = async (req, res) => {
         (0, ApiResponse_1.ApiResponse)(res, {
             statusCode: 200,
             success: true,
-            message: 'Orders retrieved successfully!',
+            message: filter
+                ? `Orders fetched successfully for user email!`
+                : 'Orders fetched successfully!',
             body: result,
         });
     }

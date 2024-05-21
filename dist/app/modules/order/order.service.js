@@ -63,48 +63,41 @@ async function getOrders(email) {
 exports.getOrders = getOrders;
 // order service for getting single order
 async function getOrder(id) {
-    try {
-        const order = await order_model_1.OrderModel.findById(id);
-        return order;
-    }
-    catch (error) {
+    const order = await order_model_1.OrderModel.findById(id);
+    if (!order) {
         const errorResponse = {
             success: false,
             message: 'Order not found',
         };
-        // @ts-ignore
         throw errorResponse;
     }
+    return order;
 }
 exports.getOrder = getOrder;
 // order service for updating single order
 async function updateOrder(id, order) {
-    try {
-        const updatedOrder = await order_model_1.OrderModel.findByIdAndUpdate(id, order, {
-            new: true,
-        });
-        return updatedOrder;
-    }
-    catch (error) {
-        // @ts-ignore
-        throw {
+    const updatedOrder = await order_model_1.OrderModel.findByIdAndUpdate(id, order, {
+        new: true,
+    });
+    if (!updatedOrder) {
+        const errorResponse = {
             success: false,
-            message: 'Error in updating order',
+            message: 'Order not found',
         };
+        throw errorResponse;
     }
+    return updatedOrder;
 }
 exports.updateOrder = updateOrder;
 // order service for deleting single order
 async function deleteOrder(id) {
-    try {
-        await order_model_1.OrderModel.findByIdAndDelete(id);
-    }
-    catch (error) {
-        // @ts-ignore
-        throw {
+    const result = await order_model_1.OrderModel.findByIdAndDelete(id);
+    if (!result) {
+        const errorResponse = {
             success: false,
-            message: 'Error in deleting order',
+            message: 'Order not found',
         };
+        throw errorResponse;
     }
 }
 exports.deleteOrder = deleteOrder;
