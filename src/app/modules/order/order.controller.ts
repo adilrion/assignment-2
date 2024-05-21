@@ -38,7 +38,9 @@ const getOrders: RequestHandler = async (req, res): Promise<void> => {
     ApiResponse<IOrder[]>(res, {
       statusCode: 200,
       success: true,
-      message: 'Orders retrieved successfully!',
+      message: filter
+        ? `Orders fetched successfully for user email!`
+        : 'Orders fetched successfully!',
       body: result,
     })
   } catch (error) {

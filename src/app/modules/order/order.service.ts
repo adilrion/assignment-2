@@ -70,17 +70,18 @@ export async function getOrders(email: string): Promise<IOrder[]> {
 
 // order service for getting single order
 export async function getOrder(id: string): Promise<IOrder | null> {
-  try {
+
     const order = await OrderModel.findById(id)
-    return order
-  } catch (error) {
-    const errorResponse = {
-      success: false,
-      message: 'Order not found',
+
+    if (!order) { 
+      const errorResponse = {
+        success: false,
+        message: 'Order not found',
+      }
+      throw errorResponse
     }
-    // @ts-ignore
-    throw errorResponse
-  }
+    return order
+
 }
 
 // order service for updating single order
@@ -88,31 +89,34 @@ export async function updateOrder(
   id: string,
   order: IOrder,
 ): Promise<IOrder | null> {
-  try {
+
     const updatedOrder = await OrderModel.findByIdAndUpdate(id, order, {
       new: true,
     })
-    return updatedOrder
-  } catch (error) {
-    // @ts-ignore
-    throw {
-      success: false,
-      message: 'Error in updating order',
+
+    if (!updatedOrder) {
+      const errorResponse = {
+        success: false,
+        message: 'Order not found',
+      }
+      throw errorResponse
     }
-  }
+    return updatedOrder
+
 }
 
 // order service for deleting single order
 export async function deleteOrder(id: string): Promise<void> {
-  try {
-    await OrderModel.findByIdAndDelete(id)
-  } catch (error) {
-    // @ts-ignore
-    throw {
-      success: false,
-      message: 'Error in deleting order',
+
+    const result = await OrderModel.findByIdAndDelete(id)
+    if (!result) {
+      const errorResponse = {
+        success: false,
+        message: 'Order not found',
+      }
+      throw errorResponse
     }
-  }
+
 }
 
 export const orderService = {

@@ -28,12 +28,13 @@ const createProduct: RequestHandler = async (req, res): Promise<void> => {
 const getProducts: RequestHandler = async (req, res): Promise<void> => {
   try {
         const searchTerm = req.query.searchTerm as string || ''
-        console.log("🚀 ~ constgetProducts:RequestHandler= ~ searchTerm:", searchTerm)
     const result = await productService.getProducts(searchTerm)
     ApiResponse<IProduct[]>(res, {
       statusCode: 200,
       success: true,
-      message: 'Products retrieved successfully!',
+      message: searchTerm
+        ? `Products matching search term '${searchTerm}' fetched successfully!`
+        : 'Products fetched successfully!',
       body: result,
     })
   } catch (error) {
@@ -53,7 +54,7 @@ const getProduct: RequestHandler = async (req, res): Promise<void> => {
     ApiResponse<IProduct>(res, {
       statusCode: 200,
       success: true,
-      message: 'Product retrieved successfully!',
+      message: 'Product fetched successfully!',
       body: result,
     })
   } catch (error) {
