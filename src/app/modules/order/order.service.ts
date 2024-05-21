@@ -70,7 +70,6 @@ export async function getOrders(email: string): Promise<IOrder[]> {
 
 // order service for getting single order
 export async function getOrder(id: string): Promise<IOrder | null> {
-
     const order = await OrderModel.findById(id)
 
     if (!order) { 
