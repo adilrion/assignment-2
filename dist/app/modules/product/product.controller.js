@@ -12,7 +12,7 @@ const createProduct = async (req, res) => {
             statusCode: 200,
             success: true,
             message: 'Product created successfully!',
-            body: result,
+            data: result,
         });
     }
     catch (error) {
@@ -34,7 +34,7 @@ const getProducts = async (req, res) => {
             message: searchTerm
                 ? `Products matching search term '${searchTerm}' fetched successfully!`
                 : 'Products fetched successfully!',
-            body: result,
+            data: result,
         });
     }
     catch (error) {
@@ -54,7 +54,7 @@ const getProduct = async (req, res) => {
             statusCode: 200,
             success: true,
             message: 'Product fetched successfully!',
-            body: result,
+            data: result,
         });
     }
     catch (error) {
@@ -75,7 +75,7 @@ const updateProduct = async (req, res) => {
             statusCode: 200,
             success: true,
             message: 'Product updated successfully!',
-            body: result,
+            data: result,
         });
     }
     catch (error) {
@@ -95,7 +95,7 @@ const deleteProduct = async (req, res) => {
             statusCode: 200,
             success: true,
             message: 'Product deleted successfully!',
-            body: null,
+            data: null,
         });
     }
     catch (error) {

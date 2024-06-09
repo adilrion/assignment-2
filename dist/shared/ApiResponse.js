@@ -5,7 +5,7 @@ const ApiResponse = (res, data) => {
     res.status(data.statusCode).json({
         success: data.success,
         message: data?.message || null,
-        body: data?.body || null,
+        data: data?.data || null,
     });
 };
 exports.ApiResponse = ApiResponse;

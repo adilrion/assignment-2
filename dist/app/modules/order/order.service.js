@@ -30,35 +30,26 @@ async function addOrder(order) {
 exports.addOrder = addOrder;
 // order service for getting all orders
 async function getOrders(email) {
-    try {
-        const pipeline = [
-            ...(email ? [{ $match: { email } }] : []),
-            {
-                $project: {
-                    email: 1,
-                    price: 1,
-                    quantity: 1,
-                    product: 1,
-                },
+    const pipeline = [
+        ...(email ? [{ $match: { email } }] : []),
+        {
+            $project: {
+                email: 1,
+                price: 1,
+                quantity: 1,
+                product: 1,
             },
-        ];
-        const orders = await order_model_1.OrderModel.aggregate(pipeline).exec();
-        if (orders.length <= 0) {
-            const errorResponse = {
-                success: false,
-                message: 'Orders not found',
-            };
-            throw errorResponse;
-        }
-        return orders;
-    }
-    catch (error) {
-        // @ts-ignore
-        throw {
+        },
+    ];
+    const orders = await order_model_1.OrderModel.aggregate(pipeline).exec();
+    if (orders.length <= 0) {
+        const errorResponse = {
             success: false,
-            message: 'Error in getting orders',
+            message: 'Orders not found',
         };
+        throw errorResponse;
     }
+    return orders;
 }
 exports.getOrders = getOrders;
 // order service for getting single order

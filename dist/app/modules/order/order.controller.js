@@ -12,7 +12,7 @@ const addOrder = async (req, res) => {
             statusCode: 200,
             success: true,
             message: 'Order created successfully!',
-            body: result,
+            data: result,
         });
     }
     catch (error) {
@@ -34,7 +34,7 @@ const getOrders = async (req, res) => {
             message: filter
                 ? `Orders fetched successfully for user email!`
                 : 'Orders fetched successfully!',
-            body: result,
+            data: result,
         });
     }
     catch (error) {
@@ -54,7 +54,7 @@ const getOrder = async (req, res) => {
             statusCode: 200,
             success: true,
             message: 'Order retrieved successfully!',
-            body: result,
+            data: result,
         });
     }
     catch (error) {
@@ -75,7 +75,7 @@ const updateOrder = async (req, res) => {
             statusCode: 200,
             success: true,
             message: 'Order updated successfully!',
-            body: result,
+            data: result,
         });
     }
     catch (error) {
@@ -95,7 +95,7 @@ const deleteOrder = async (req, res) => {
             statusCode: 200,
             success: true,
             message: 'Order deleted successfully!',
-            body: null,
+            data: null,
         });
     }
     catch (error) {
