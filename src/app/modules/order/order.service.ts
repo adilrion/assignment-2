@@ -35,52 +35,43 @@ export async function addOrder(order: IOrder): Promise<IOrder> {
 
 // order service for getting all orders
 export async function getOrders(email: string): Promise<IOrder[]> {
-  try {
-    const pipeline = [
-      ...(email ? [{ $match: { email } }] : []),
-      {
-        $project: {
-          email: 1,
-          price: 1,
-          quantity: 1,
-          product: 1,
-        },
+  const pipeline = [
+    ...(email ? [{ $match: { email } }] : []),
+    {
+      $project: {
+        email: 1,
+        price: 1,
+        quantity: 1,
+        product: 1,
       },
-    ]
+    },
+  ]
 
-    const orders = await OrderModel.aggregate(pipeline).exec()
+  const orders = await OrderModel.aggregate(pipeline).exec()
 
-    if (orders.length <= 0) {
-      const errorResponse = {
-        success: false,
-        message: 'Orders not found',
-      }
-      throw errorResponse
-    }
-
-    return orders
-  } catch (error) {
-    // @ts-ignore
-    throw {
+  if (orders.length <= 0) {
+    const errorResponse = {
       success: false,
-      message: 'Error in getting orders',
+      message: 'Orders not found',
     }
+    throw errorResponse
   }
+
+  return orders
 }
 
 // order service for getting single order
 export async function getOrder(id: string): Promise<IOrder | null> {
-    const order = await OrderModel.findById(id)
+  const order = await OrderModel.findById(id)
 
-    if (!order) { 
-      const errorResponse = {
-        success: false,
-        message: 'Order not found',
-      }
-      throw errorResponse
+  if (!order) {
+    const errorResponse = {
+      success: false,
+      message: 'Order not found',
     }
-    return order
-
+    throw errorResponse
+  }
+  return order
 }
 
 // order service for updating single order
@@ -88,34 +79,30 @@ export async function updateOrder(
   id: string,
   order: IOrder,
 ): Promise<IOrder | null> {
+  const updatedOrder = await OrderModel.findByIdAndUpdate(id, order, {
+    new: true,
+  })
 
-    const updatedOrder = await OrderModel.findByIdAndUpdate(id, order, {
-      new: true,
-    })
-
-    if (!updatedOrder) {
-      const errorResponse = {
-        success: false,
-        message: 'Order not found',
-      }
-      throw errorResponse
+  if (!updatedOrder) {
+    const errorResponse = {
+      success: false,
+      message: 'Order not found',
     }
-    return updatedOrder
-
+    throw errorResponse
+  }
+  return updatedOrder
 }
 
 // order service for deleting single order
 export async function deleteOrder(id: string): Promise<void> {
-
-    const result = await OrderModel.findByIdAndDelete(id)
-    if (!result) {
-      const errorResponse = {
-        success: false,
-        message: 'Order not found',
-      }
-      throw errorResponse
+  const result = await OrderModel.findByIdAndDelete(id)
+  if (!result) {
+    const errorResponse = {
+      success: false,
+      message: 'Order not found',
     }
-
+    throw errorResponse
+  }
 }
 
 export const orderService = {

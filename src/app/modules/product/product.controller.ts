@@ -13,7 +13,7 @@ const createProduct: RequestHandler = async (req, res): Promise<void> => {
       statusCode: 200,
       success: true,
       message: 'Product created successfully!',
-      body: result,
+      data: result,
     })
   } catch (error) {
     res.status(400).json({
@@ -35,7 +35,7 @@ const getProducts: RequestHandler = async (req, res): Promise<void> => {
       message: searchTerm
         ? `Products matching search term '${searchTerm}' fetched successfully!`
         : 'Products fetched successfully!',
-      body: result,
+      data: result,
     })
   } catch (error) {
     res.status(400).json({
@@ -55,7 +55,7 @@ const getProduct: RequestHandler = async (req, res): Promise<void> => {
       statusCode: 200,
       success: true,
       message: 'Product fetched successfully!',
-      body: result,
+      data: result,
     })
   } catch (error) {
     res.status(400).json({
@@ -76,7 +76,7 @@ const updateProduct: RequestHandler = async (req, res): Promise<void> => {
       statusCode: 200,
       success: true,
       message: 'Product updated successfully!',
-      body: result,
+      data: result,
     })
   } catch (error) {
     res.status(400).json({
@@ -96,7 +96,7 @@ const deleteProduct: RequestHandler = async (req, res): Promise<void> => {
       statusCode: 200,
       success: true,
       message: 'Product deleted successfully!',
-      body: null,
+      data: null,
     })
   } catch (error) {
     res.status(400).json({

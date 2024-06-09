@@ -17,7 +17,7 @@ const addOrder: RequestHandler = async (req, res): Promise<void> => {
       statusCode: 200,
       success: true,
       message: 'Order created successfully!',
-      body: result,
+      data: result,
     })
   } catch (error) {
     res.status(400).json({
@@ -41,7 +41,7 @@ const getOrders: RequestHandler = async (req, res): Promise<void> => {
       message: filter
         ? `Orders fetched successfully for user email!`
         : 'Orders fetched successfully!',
-      body: result,
+      data: result,
     })
   } catch (error) {
     res.status(400).json({
@@ -62,7 +62,7 @@ const getOrder: RequestHandler = async (req, res): Promise<void> => {
       statusCode: 200,
       success: true,
       message: 'Order retrieved successfully!',
-      body: result,
+      data: result,
     })
   } catch (error) {
     res.status(400).json({
@@ -84,7 +84,7 @@ const updateOrder: RequestHandler = async (req, res): Promise<void> => {
       statusCode: 200,
       success: true,
       message: 'Order updated successfully!',
-      body: result,
+      data: result,
     })
   } catch (error) {
     res.status(400).json({
@@ -104,7 +104,7 @@ const deleteOrder: RequestHandler = async (req, res): Promise<void> => {
       statusCode: 200,
       success: true,
       message: 'Order deleted successfully!',
-      body: null,
+      data: null,
     })
   } catch (error) {
     res.status(400).json({
